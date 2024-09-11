@@ -1,11 +1,16 @@
 #include<iostream>
-#include<stdlib.h> // Perform system based processes
+#include<cstdlib> // Perform system based processes
 
 using namespace std;
 
 void banner()
 {
+    #ifdef _WIN32
+    system("cls"); // Clear powershell or windows terminal
+    #else
     system("clear"); // For clearing the terminal
+    #endif
+
     cout << "*****************************************************" << endl;
     cout << "*           Train Ticket Booking Service            *" << endl;
     cout << "*****************************************************" << endl;
@@ -28,7 +33,11 @@ int adminLogin()
             cin >> password;
             if (login_username == username && login_password == password )
             {
+                #ifdef _WIN32
+                system("adminLogin.exe");
+                #else
                 system("./adminLogin");
+                #endif
                 break;
             }
             else
@@ -75,10 +84,6 @@ int main()
             cout << "Invalid choice!" << endl;
             return 1;
     }
-
-    
-    
     banner();
     return 0;
-
 }
