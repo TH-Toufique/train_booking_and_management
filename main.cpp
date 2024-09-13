@@ -1,5 +1,6 @@
 #include<iostream>
 #include<cstdlib> // Perform system based processes
+#include "headers.h"
 
 using namespace std;
 
@@ -16,73 +17,112 @@ void banner()
     cout << "*****************************************************" << endl;
 }
 
-int adminLogin()
+void adminMenu()
 {
-        string username, password;
-        string login_username = "admin"; // Default Admin dashboard
-        string login_password = "admin"; // Default Admin dashboard
-        while(true)
-        {
-            cout << "\n*******************************************************\n" << endl;
-            cout << "                   WELCOME ADMIN                         \n" << endl;
-            cout << "\n*******************************************************\n" << endl;
-            cout << "Enter loginID: ";
-            // Specific admin login credentials
-            cin >> username;
-            cout << "\nEnter password: ";
-            cin >> password;
-            if (login_username == username && login_password == password )
-            {
-                #ifdef _WIN32
-                system("adminLogin.exe");
-                #else
-                system("./adminLogin");
-                #endif
-                break;
-            }
-            else
-            {
-                cout << "Invalid username or password. Please try again!!" << endl;
-                cin.ignore();
-                cin.get();
-            }
-        }
-}
-
-int userLogin()
-{
-    cout << "Hello World"; //Will be implented here for now hello world :)
+        cout << "--------------------------Menu------------------------" << endl;
+        cout << "1. Add Train" << endl;
+        cout << "2. Display Train" << endl;
+        cout << "3. Search Train" << endl;
+        cout << "4. Update for Train" << endl;
+        cout << "5. Delete Train" << endl;
+        cout << "0. Logout" << endl;
+        cout << "------------------------------------------------------" << endl;
 }
 
 int main()
 {
 
-    cout <<"\n*******************************************************\n" << endl;
-    cout << "      WELCOME TO THE TRAIN BOOKING TICKET SERVICE       \n" << endl;
-    cout <<"\n*******************************************************\n" << endl;
-    cout << "You are an Admin/User: " << endl;
+    cout <<"*******************************************************" << endl;
+    cout <<"      WELCOME TO THE TRAIN BOOKING TICKET SERVICE      " << endl;
+    cout <<"*******************************************************" << endl;
 
     int choice;
+    bool flag;
     cout << "\n";
-    cout << "1. Admin" << endl;
-    cout << "2. User" << endl;
+    cout << "1. Create New Account" << endl;
+    cout << "2. Login existing account" << endl;
     cout << "3. Exit" << endl;
     cout << "Input: ";
     cin >> choice;
 
+    Authentication authentication;
     switch (choice)
     {
+    case 1:
+        cout << "Sign Up" << endl;
+        if (authentication.signUp())
+        {
+            cout << "Account Created Successfully" << endl;
+            system("pause");
+        }
+        break;
+    
+    case 2:
+        cout << "Login" << endl;
+        if (authentication.login())
+        {
+            cout << "Logged in successfully" << endl;
+            system("pause");
+            flag = true;
+        }
+        break;
+    }
+
+    if (flag)
+    {
+        adminMenu();
+        int choice;
+        cin >> choice;
+        switch (choice)
+        {
         case 1:
-            adminLogin();
+            #ifdef _WIN32
+            system("addTrain.exe");
+            #else
+            system("./addTrain.exe");
+            #endif
             break;
+
         case 2:
-            userLogin();
+            #ifdef _WIN32
+            system("displayTrain.exe");
+            #else
+            system("./displayTrain");
+            #endif
             break;
+
         case 3:
-            return 0;
+            #ifdef _WIN32
+            system("searchTrain.exe");
+            #else
+            system("./searchTrain");
+            #endif
+            break;
+        case 4:
+            #ifdef _WIN32
+            system("trainUpdate.exe");
+            #else
+            system("./trainUpdate");
+            #endif
+            break;
+
+        case 5:
+            #ifdef _WIN32
+            system("deleteTrain.exe");
+            #else
+            system("./deleteTrain");
+            #endif
+            break;
+
+        case 0:
+            cout << "Thanks for using me....!" << endl;
+            break;
         default:
-            cout << "Invalid choice!" << endl;
-            return 1;
+            cout << "Wrong Option!!" << endl;
+        }
+        cout << "Press any key to continue......";
+        cin.ignore();
+        cin.get();
     }
     banner();
     return 0;
