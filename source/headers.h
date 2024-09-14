@@ -1,5 +1,6 @@
 #include<iostream>
 #include<fstream> //Stream class to both read and write from/to files.
+#include<string>
 #include<stdlib.h>
 
 using namespace std;
@@ -12,7 +13,7 @@ class Authentication
         ofstream file_out; 
 
     public:
-        bool signUp()
+        bool signUp(int type) //need to define the type else bool functions won't properly
         {
             file_out.open("login.txt", ios :: out | ios :: app ); //handle file output
             file_in.open("login.txt", ios :: in); //handle file input
@@ -33,14 +34,23 @@ class Authentication
             }
             cout << "Enter password: ";
             cin >> password;
-            file_out << "Admin Username: " << admin << endl;
+            if (type == 1)
+            {
+                file_out << "Type: admin" << endl; // determining the type if logged in person is user or admin
+            }
+            else if (type == 2)
+            {
+                file_out << "Type: user" << endl; // determining the type if logged in person is user or admin
+            }
+            
+            
             file_out << "Username: " << username << endl;
             file_out << "Password: " << password << endl;
             file_out.close(); // CLosing the stream
             file_in.close(); // CLosing the stream
             return true;
         }
-        bool login()
+        bool login(int type)
         {
             file_in.open("login.txt", ios :: in);
             cout << "Enter Username: ";
@@ -50,15 +60,30 @@ class Authentication
             string check_username;
             string user_name = "Username:" + username;
             string user_pass = "Password:" + password;
+            string user_type;
+            if (type == 1)
+            {
+                user_type = "Type: admin";
+            }
+            else if (type == 2)
+            {
+                user_type = "Type: user";
+            }
+            
+            
             while (getline(file_in, check_username)) // getline function os fstream use for read line from files
             {
-                if (check_username == user_name)
+                if (check_username == user_type)
                 {
                     getline(file_in, check_username);
-                    if (check_username == user_pass)
+                    if (check_username == user_name)
                     {
-                        file_in.close();
-                        return true;
+                        getline(file_in, check_username);
+                        if (check_username == user_pass)
+                        {
+                            file_in.close();
+                            return true;
+                        }
                     }
                 }
             }

@@ -1,6 +1,7 @@
 #include<iostream>
 #include<cstdlib> // Perform system based processes
 #include "source/headers.h"
+#include "source/administrator.h"
 
 using namespace std;
 
@@ -29,100 +30,136 @@ void adminMenu()
         cout << "------------------------------------------------------" << endl;
 }
 
+
 int main()
 {
-
     cout <<"*******************************************************" << endl;
     cout <<"      WELCOME TO THE TRAIN BOOKING TICKET SERVICE      " << endl;
     cout <<"*******************************************************" << endl;
 
-    int choice;
-    bool flag;
-    cout << "\n";
-    cout << "1. Create New Account" << endl;
-    cout << "2. Login existing account" << endl;
-    cout << "3. Exit" << endl;
-    cout << "Input: ";
-    cin >> choice;
+    string flag;
+    int make_choice;
+    cout << "Login as: " << endl;
+    cout << "1. Admin" << endl;
+    cout << "2. User" << endl;
+    cin >> make_choice;
 
     Authentication authentication;
-    switch (choice)
+
+    //Admin Login
+    if (make_choice == 1)
     {
-    case 1:
+        int admin_choice;
+        cout << "\n";
+        cout << "1. Create new account" << endl;
+        cout << "2. Login to an existing account" << endl;
+        cout << "0. Exit" << endl;
+        cout << "Input: ";
+        cin >> admin_choice;
+
+        switch (admin_choice)
+        {
+        case 1:
         cout << "Sign Up" << endl;
-        if (authentication.signUp())
+        if (authentication.signUp(1)) // Values passed from headers.h
         {
             cout << "Account Created Successfully" << endl;
             system("pause");
         }
         break;
-    
-    case 2:
-        cout << "Login" << endl;
-        if (authentication.login())
-        {
-            cout << "Logged in successfully" << endl;
-            system("pause");
-            flag = true;
+
+        case 2:
+            cout << "Login" << endl;
+            retry_1:
+                if (authentication.login(1)) // Values passed from headers.h
+                {
+                    cout << "Login successfull" << endl;
+                    system("pause");
+                    flag = "admin";
+                }
+                else
+                {
+                    cout << "Login failed" << endl;
+                    system("pause");
+                    goto retry_1;
+                }
+                break;
         }
-        break;
     }
 
-    if (flag)
+    //User login
+    if (make_choice == 2)
     {
+        int user_choice;
+        cout << "\n";
+        cout << "1. Create new account" << endl;
+        cout << "2. Login to an existing account" << endl;
+        cout << "0. Exit" << endl;
+        cout << "Input: ";
+        cin >> user_choice;
+
+        switch (user_choice)
+        {
+        case 1:
+            cout << "Signup " << endl;
+            if (authentication.signUp(2))
+            {
+                cout << "Your account has been created successfully" << endl;
+                system("pause");
+            }
+            break;
+        case 2:
+            cout << "Login" << endl;
+            retry_2:
+            if (authentication.login(2)) // Values passed from headers.h
+            {
+                cout << "Logged in successfully" << endl;
+                flag = "user";
+                system("pause");
+            }
+            else
+            {
+                cout << "Invalid credentials!!" << endl;
+                system("pause");
+                goto retry_2;
+            }
+            break;
+        }
+    }
+    
+    if (flag == "admin")
+    {
+        trainManagement tm;
+        retry_3:
         adminMenu();
         int choice;
         cin >> choice;
         switch (choice)
         {
-        case 1:
-            #ifdef _WIN32
-            system("addTrain.exe");
-            #else
-            system("./addTrain.exe");
-            #endif
-            break;
+            case 1:
+                tm.add_train();
+                break;
 
-        case 2:
-            #ifdef _WIN32
-            system("displayTrain.exe");
-            #else
-            system("./displayTrain");
-            #endif
-            break;
+            case 2:
+                tm.view_trains();
+                break;
+            
+            case 3:
+                tm.search_train();
+                break;
+            
+            case 4:
+                cout << "Update train will be implemented later";
+                system("pause");
+                break;
 
-        case 3:
-            #ifdef _WIN32
-            system("searchTrain.exe");
-            #else
-            system("./searchTrain");
-            #endif
-            break;
-        case 4:
-            #ifdef _WIN32
-            system("trainUpdate.exe");
-            #else
-            system("./trainUpdate");
-            #endif
-            break;
-
-        case 5:
-            #ifdef _WIN32
-            system("deleteTrain.exe");
-            #else
-            system("./deleteTrain");
-            #endif
-            break;
-
-        case 0:
-            cout << "Thanks for using me....!" << endl;
-            break;
-        default:
-            cout << "Wrong Option!!" << endl;
+            case 5:
+                tm.delete_train();
+                break;
+            
+            case 0:
+                exit(0);
         }
-        cout << "Press any key to continue......";
-        cin.ignore();
-        cin.get();
     }
     banner();
     return 0;
