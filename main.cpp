@@ -127,6 +127,7 @@ int main()
         }
     }
     
+    char selection;
     if (flag == "admin")
     {
         trainManagement tm;
@@ -137,7 +138,18 @@ int main()
         switch (choice)
         {
             case 1:
+            retry_4:
                 tm.add_train();
+                cout << "Do you want to add more train? (y/n): ";
+                cin >> selection;
+                if (selection == 'y' || selection == 'Y' ) // Alternatively cctype header can be used
+                {
+                    goto retry_4;
+                }
+                else
+                {
+                    goto retry_3;
+                }
                 break;
 
             case 2:
