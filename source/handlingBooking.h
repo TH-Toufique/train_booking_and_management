@@ -6,17 +6,18 @@
 
 using namespace std;
 
-class handlingBooking : public trainManagement  // Inherit trainManagement from main
+class handling_Booking : public trainManagement  // Inherit trainManagement from main
 {
     private:
-        string train_number, name_of_passenger, number_of_tickets, seat_numbers, boarding_station, train_time, fare;
+        string train_number, name_of_passenger, number_of_tickets, seat_numbers, boarding_station, train_time, fare, train_info;
         ifstream file_in;
         ofstream file_out;
         int train_inquiry;
         void details()
         {
             file_out.open("booked_tickets.txt", ios :: in | ios :: app);
-            file_out.open("train_details.txt", ios :: out);
+            file_in.open("train_details.txt", ios :: out);
+            file_out << "Train: " << train_info << endl;
             file_out << "Ticket Inquiry Number: " << train_inquiry << endl;
             file_out << "Passenger name: " << name_of_passenger << endl;
             file_out << "Number of tickets: " << number_of_tickets << endl;
@@ -32,11 +33,13 @@ class handlingBooking : public trainManagement  // Inherit trainManagement from 
             /*Restricts the range of the random number to between 0 and 8999 
             (because % 9000 means the remainder when divided by 9000).
             Adding 1000 shifts the range, making it between 1000 and 9999, inclusive*/
-            train_inquiry = rand()% 9000 + 1000;
-            search_train(); // inherit from administrator header
-            cout << "Train Inquiry Number: " << train_inquiry << endl;
+            train_inquiry = rand() % 9000 + 1000; // train inquiry number
+            train_info = search_train();
+            cout << "Train: " << train_info << endl;
+            cout << "Train inquiry number: " << train_inquiry << endl;
             cout << "Enter Passenger Name: " << endl;
-            cin >> name_of_passenger;
+            cin.ignore();
+            getline(cin, name_of_passenger);
             cout << "Enter number of tickets: ";
             cin >> number_of_tickets;
             label:
@@ -58,7 +61,7 @@ class handlingBooking : public trainManagement  // Inherit trainManagement from 
         {
             file_in.open("booked_tickets.txt", ios :: out);
             string booking_search;
-            cout << "Enter booking id: ";
+            cout << "Enter train inquiry number: ";
             cin >> booking_search;
             string search;
             while (getline(file_in, search))

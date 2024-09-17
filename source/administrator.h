@@ -8,7 +8,7 @@ using namespace std;
 class trainManagement
 {
 private:
-    string train_number, number_of_seats,route, train_time, fare;
+    string train_number, number_of_seats,train_name,route, train_time, fare;
     ofstream train_in;
     ifstream train_out;
 
@@ -17,7 +17,8 @@ private:
     {
         train_in.open("train_details.txt", ios::app);  // Writing to file
         train_in << "Train number: " << train_number << endl;
-        train_in << "Number of seats: " << number_of_seats << endl;
+        train_in << "Name of train: " << train_name << endl;
+        train_in << "Number of seats" << number_of_seats << endl;
         train_in << "Route: " << route << endl;
         train_in << "Train time: " << train_time << endl;
         train_in << "Fare: " << fare << endl;
@@ -32,6 +33,9 @@ public:
         cout << "Enter train number: ";
         cin >> train_number;
         cin.ignore(); // Ignore the new line character
+
+        cout << "Enter train name: ";
+        getline(cin, train_name);
         cout << "Enter route: ";
         getline(cin, route);
         cout << "Enter train timings: ";
@@ -60,7 +64,9 @@ public:
     }
 
     // Search for a specific train
-    void search_train()
+    string search_train()
+    /*value will be returned and in handlingBooking header file 
+    we are using = operator or assign operator which  is essential for assigning values*/
     {
         train_out.open("train_details.txt", ios::in);  // Reading from file
 

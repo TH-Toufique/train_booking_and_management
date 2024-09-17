@@ -31,6 +31,18 @@ void adminMenu()
         cout << "------------------------------------------------------" << endl;
 }
 
+void userMenu()
+{
+    banner();
+    cout << "--------------------------Menu------------------------" << endl;
+    cout << "1. Display train" << endl;
+    cout << "2. Search train" << endl;
+    cout << "3. Book tickets" << endl;
+    cout << "4. Print ticket" << endl;
+    cout << "5. Change password" << endl;
+    cout << "6. Cancel train" << endl;
+    cout << "0. Logout" << endl;
+}
 
 int main()
 {
@@ -60,9 +72,14 @@ int main()
     }
     
     char selection;
+    trainManagement train_manage;
+    handling_Booking handle_booking;
+
+    // Admin section
     if (flag == "admin")
     {
         trainManagement tm;
+
         retry_3:
         adminMenu();
         int choice;
@@ -93,8 +110,8 @@ int main()
                 break;
             
             case 4:
-                cout << "Update train will be implemented later";
-                system("pause");
+                handle_booking.view_bookings();
+                goto retry_3;
                 break;
 
             case 5:
@@ -104,6 +121,56 @@ int main()
             case 0:
                 exit(0);
         }
+    }
+
+    //User section
+    if (flag == "user")
+    {
+        retry_6:
+            userMenu();
+            int user_choice;
+            cin >> user_choice;
+            switch (user_choice)
+            {
+                case 1:
+                    train_manage.view_trains();
+                    system("pause");
+                    goto retry_6;
+                    break;
+                
+                case 2:
+                    train_manage.search_train();
+                    system("pause");
+                    goto retry_6;
+                    break;
+
+                case 3:
+                    handle_booking.ticketBooking();
+                    system("pause");
+                    goto retry_6;
+                    break;
+                
+                case 4:
+                    cout << "Will be implemented later";
+                    system("pause");
+                    goto retry_6;
+                    break;
+                
+                case 5:
+                    cout << "Will be implemented later";
+                    system("pause");
+                    goto retry_6;
+                    break;
+
+                case 6:
+                    cout << "Will be implemented later";
+                    system("pause");
+                    goto retry_6;
+                    break;
+
+                case 0:
+                    exit(0);
+            }
     }
     banner();
     return 0;
