@@ -2,6 +2,7 @@
 #include<cstdlib> // Perform system based processes
 #include "source/headers.h"
 #include "source/administrator.h"
+#include "source/handlingBooking.h"
 
 using namespace std;
 
@@ -44,87 +45,18 @@ int main()
     cout << "2. User" << endl;
     cin >> make_choice;
 
-    Authentication authentication;
-
-    //Admin Login
-    if (make_choice == 1)
+    if (make_choice == 1 || make_choice == 2)
     {
-        int admin_choice;
-        cout << "\n";
-        cout << "1. Create new account" << endl;
-        cout << "2. Login to an existing account" << endl;
-        cout << "0. Exit" << endl;
-        cout << "Input: ";
-        cin >> admin_choice;
-
-        switch (admin_choice)
-        {
-        case 1:
-        cout << "Sign Up" << endl;
-        if (authentication.signUp(1)) // Values passed from headers.h
-        {
-            cout << "Account Created Successfully" << endl;
-            system("pause");
-        }
-        break;
-
-        case 2:
-            cout << "Login" << endl;
-            retry_1:
-                if (authentication.login(1)) // Values passed from headers.h
-                {
-                    cout << "Login successfull" << endl;
-                    system("pause");
-                    flag = "admin";
-                }
-                else
-                {
-                    cout << "Login failed" << endl;
-                    system("pause");
-                    goto retry_1;
-                }
-                break;
-        }
+        handlingBooking(make_choice);
+        flag = (make_choice == 1) ? "admin" : "user";
     }
-
-    //User login
-    if (make_choice == 2)
+    else if (make_choice == 0)
+    {   
+        //nop
+    }
+    else
     {
-        int user_choice;
-        cout << "\n";
-        cout << "1. Create new account" << endl;
-        cout << "2. Login to an existing account" << endl;
-        cout << "0. Exit" << endl;
-        cout << "Input: ";
-        cin >> user_choice;
-
-        switch (user_choice)
-        {
-        case 1:
-            cout << "Signup " << endl;
-            if (authentication.signUp(2))
-            {
-                cout << "Your account has been created successfully" << endl;
-                system("pause");
-            }
-            break;
-        case 2:
-            cout << "Login" << endl;
-            retry_2:
-            if (authentication.login(2)) // Values passed from headers.h
-            {
-                cout << "Logged in successfully" << endl;
-                flag = "user";
-                system("pause");
-            }
-            else
-            {
-                cout << "Invalid credentials!!" << endl;
-                system("pause");
-                goto retry_2;
-            }
-            break;
-        }
+        cout << "Invalid choice. Closing the program";
     }
     
     char selection;

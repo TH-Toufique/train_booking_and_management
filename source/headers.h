@@ -91,3 +91,46 @@ class Authentication
             return true;
         }
 };
+
+// For users
+void handlingBooking(int userType)
+{
+    Authentication authentication;
+    int choice;
+    cout << "\n";
+    cout << "1. Create new account" << endl;
+    cout << "2. Login to an existing account" << endl;
+    cout << "0. Exit" << endl;
+    cout << "Input: ";
+    cin >> choice;
+
+    switch (choice)
+    {
+        case 1:
+            cout << "Signup" << endl;
+            if (authentication.signUp(userType))
+            {
+                cout << "Your account has been created successfully" << endl;
+                system("pause");
+            }
+            break;
+        
+        case 2:
+            cout << "Login" << endl;
+            string flag = (userType == 1) ? "admin" : "user"; //ternary operator to assign a value to the flag variable based on the value of userType
+            retry_login:
+            if (authentication.login(userType))
+            {
+                cout << "Logged in successfully" << endl;
+                system("pause");
+                flag = (userType == 1) ? "admin" : "user";
+            }
+            else
+            {
+                cout << "Invalid credentials" << endl;
+                system("pause");
+                goto retry_login;
+            }
+            break;
+    }
+}
