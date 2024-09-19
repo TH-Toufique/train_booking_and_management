@@ -5,6 +5,9 @@
 
 using namespace std;
 
+
+
+string Name;
 class Authentication
 {
     private:
@@ -55,6 +58,7 @@ class Authentication
             file_in.open("login.txt", ios :: in);
             cout << "Enter Username: ";
             cin >> username;
+            Name = username;
             cout << "Enter Password: ";
             cin >> password;
             string check_username;
@@ -92,31 +96,36 @@ class Authentication
         }
 };
 
+void print_name()
+{
+    cout << "Hello" << Name << endl;
+}
+
 // For users
 void handlingBooking(int userType)
 {
     Authentication authentication;
     int choice;
-    cout << "\n";
-    cout << "1. Create new account" << endl;
-    cout << "2. Login to an existing account" << endl;
-    cout << "0. Exit" << endl;
-    cout << "Input: ";
     cin >> choice;
 
     switch (choice)
     {
         case 1:
-            cout << "Signup" << endl;
+            cout << "*******************************************************" << endl;
+            cout << "                    Sign Up                            " << endl;
+            cout << "*******************************************************" << endl;
             if (authentication.signUp(userType))
             {
                 cout << "Your account has been created successfully" << endl;
                 system("pause");
+                exit(0);
             }
             break;
         
         case 2:
-            cout << "Login" << endl;
+            cout << "*******************************************************" << endl;
+            cout << "                    Login Page                         " << endl;
+            cout << "*******************************************************" << endl;
             string flag = (userType == 1) ? "admin" : "user"; //ternary operator to assign a value to the flag variable based on the value of userType
             retry_login:
             if (authentication.login(userType))

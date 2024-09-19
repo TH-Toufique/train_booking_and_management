@@ -6,7 +6,7 @@
 
 using namespace std;
 
-class handling_Booking : public trainManagement  // Inherit trainManagement from main
+class handling_Booking : public train_Management  // Inherit trainManagement from main
 {
     private:
         string train_number, name_of_passenger, number_of_tickets, seat_numbers, boarding_station, train_time, fare, train_info;

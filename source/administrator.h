@@ -1,3 +1,5 @@
+#ifndef ADMINISTRATOR_H //To avoid compiling error it has been assinged for unique header file
+#define ADMINISTRATOR_H
 #include<iostream>
 #include<fstream>
 #include<string>
@@ -5,7 +7,7 @@
 using namespace std;
 
 
-class trainManagement
+class train_Management
 {
 private:
     string train_number, number_of_seats,train_name,route, train_time, fare;
@@ -72,7 +74,7 @@ public:
 
         if (!train_out) {
             cout << "No trains found!" << endl;
-            return;
+            return 0;
         }
 
         string search;
@@ -155,3 +157,5 @@ public:
         }
     }
 };
+
+#endif // ADMINISTRATOR_H

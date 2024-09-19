@@ -21,20 +21,22 @@ void banner()
 
 void adminMenu()
 {
-        cout << "--------------------------Menu------------------------" << endl;
+        cout << "*******************************************************" << endl;
+        cout << "                    Admin Menu                         " << endl;
+        cout << "*******************************************************" << endl;
         cout << "1. Add Train" << endl;
         cout << "2. Display Train" << endl;
         cout << "3. Search Train" << endl;
         cout << "4. Update for Train" << endl;
         cout << "5. Delete Train" << endl;
         cout << "0. Logout" << endl;
-        cout << "------------------------------------------------------" << endl;
 }
 
 void userMenu()
 {
-    banner();
-    cout << "--------------------------Menu------------------------" << endl;
+    cout << "*******************************************************" << endl;
+    cout << "                    User Menu                          " << endl;
+    cout << "*******************************************************" << endl;
     cout << "1. Display train" << endl;
     cout << "2. Search train" << endl;
     cout << "3. Book tickets" << endl;
@@ -44,21 +46,50 @@ void userMenu()
     cout << "0. Logout" << endl;
 }
 
-int main()
+void loginPage()
 {
-    cout <<"*******************************************************" << endl;
-    cout <<"      WELCOME TO THE TRAIN BOOKING TICKET SERVICE      " << endl;
-    cout <<"*******************************************************" << endl;
+    cout << "*******************************************************" << endl;
+    cout << "                    Login Page                         " << endl;
+    cout << "*******************************************************" << endl;
 
-    string flag;
-    int make_choice;
-    cout << "Login as: " << endl;
     cout << "1. Admin" << endl;
     cout << "2. User" << endl;
+    cout << "0. Exit" << endl;
+    cout << "*******************************************************" << endl;
+    cout << "Select an option: " << endl;
+    // cout << "" << endl;
+    // cout << "" << endl;
+}
+
+void loginPage_2()
+{
+    cout << "*******************************************************" << endl;
+    cout << "                    Login Page                         " << endl;
+    cout << "*******************************************************" << endl;
+
+    cout << "1. Create an account" << endl;
+    cout << "2. Login to existing account" << endl;
+    cout << "0. Exit" << endl;
+    cout << "*******************************************************" << endl;
+    cout << "Select an option: " << endl;
+}
+
+int main()
+{
+    string flag;
+    int make_choice;
+    loginPage();
     cin >> make_choice;
 
     if (make_choice == 1 || make_choice == 2)
     {
+        #ifdef _WIN32
+        system("cls"); // Clear powershell or windows terminal
+        #else
+        system("clear"); // For clearing the terminal
+        #endif
+        banner();
+        loginPage_2();
         handlingBooking(make_choice);
         flag = (make_choice == 1) ? "admin" : "user";
     }
@@ -72,15 +103,17 @@ int main()
     }
     
     char selection;
-    trainManagement train_manage;
+    train_Management train_manage;
     handling_Booking handle_booking;
 
     // Admin section
     if (flag == "admin")
     {
-        trainManagement tm;
+        train_Management tm;
 
         retry_3:
+        banner();
+        print_name();
         adminMenu();
         int choice;
         cin >> choice;
