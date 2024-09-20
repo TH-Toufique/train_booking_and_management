@@ -9,7 +9,7 @@ using namespace std;
 class handling_Booking : public train_Management  // Inherit trainManagement from main
 {
     private:
-        string train_number, name_of_passenger, number_of_tickets, seat_numbers, boarding_station, train_time, fare, train_info;
+        string train_number, name_of_passenger, seat_numbers, boarding_station, train_time, fare, train_info;
         ifstream file_in;
         ofstream file_out;
         int train_inquiry;
@@ -20,7 +20,6 @@ class handling_Booking : public train_Management  // Inherit trainManagement fro
             file_out << "Train: " << train_info << endl;
             file_out << "Ticket Inquiry Number: " << train_inquiry << endl;
             file_out << "Passenger name: " << name_of_passenger << endl;
-            file_out << "Number of tickets: " << number_of_tickets << endl;
             file_out << "__________________________" << endl; // divider
             file_out.close();
             file_in.close();
@@ -40,43 +39,41 @@ class handling_Booking : public train_Management  // Inherit trainManagement fro
             cout << "Enter Passenger Name: " << endl;
             cin.ignore();
             getline(cin, name_of_passenger);
-            cout << "Enter number of tickets: ";
-            cin >> number_of_tickets;
             label:
             cout << "Boarding Station: ";
             cin >> boarding_station;
+            booked_seats(train_info.substr(0, 4));
             details(); // writing above details in details file.
         }
         void view_bookings()
         {
             file_in.open("booked_tickets.txt", ios :: out);
-            string booking_details;
-            while (getline(file_in, booking_details))
+            string bookings;
+            while (getline(file_in, bookings))
             {
-                cout << booking_details << endl;
+                cout << bookings << endl;
             }
             file_in.close();
         }
         void search_booking()
         {
-            file_in.open("booked_tickets.txt", ios :: out);
-            string booking_search;
+            file_in.open("tickets.txt", ios :: out);
+            string search_booked;
+            string booking_reading;
             cout << "Enter train inquiry number: ";
-            cin >> booking_search;
-            string search;
-            while (getline(file_in, search))
+            cin >> search_booked;
+            while (getline(file_in, booking_reading))
             {
-                if (search == ("Booking id: " + search))
+                if (booking_reading == ("Train inquiry number: " + search_booked))
                 {
-                    while (getline(file_in,search))
+                    while (getline(file_in, booking_reading))
                     {
-                        cout << search << endl;
-                        if (search == "__________________________")
+                        cout << booking_reading << endl;
+                        if (booking_reading == "__________________________")
                         {
                             break;
-                        }  
+                        }
                     }
-                    
                 }
             }
             file_in.close();

@@ -184,7 +184,7 @@ int main()
                     break;
                 
                 case 4:
-                    cout << "Will be implemented later";
+                    handle_booking.search_booking();
                     system("pause");
                     goto retry_6;
                     break;

@@ -81,6 +81,8 @@ public:
         cout << "Enter train number: ";
         cin >> search;
         string train_misc;
+        string train_misc_value;
+
         bool found = false;
 
         while (getline(train_out, train_misc))
@@ -90,7 +92,7 @@ public:
                 cout << train_misc << endl;
                 found = true;
                 while (getline(train_out, train_misc))
-                {
+                {   
                     cout << train_misc << endl;
                     if (train_misc == "___________________________")
                     {
@@ -99,12 +101,14 @@ public:
                 }
             }
         }
-
+        train_out.close();
         if (!found)
         {
             cout << "Train not found" << endl;
         }
-        train_out.close();
+        /*This extracts a substring from train_misc_value starting from index 14, 
+        and goes until the end of the string*/
+        return search + train_misc_value.substr(14, train_misc_value.length() -14);
     }
 
     // Delete a train
@@ -156,6 +160,50 @@ public:
             cout << "Train deleted successfully" << endl;
         }
     }
+
+    void booked_seats(string train_number)
+    {
+        train_out.open("Train_details.txt", ios :: app);
+        string old_seat, new_seat, train_val, seat;
+        int line = 0;
+        while (getline(train_out, train_val))
+        {
+            if (train_val ==("Train Number: " + train_number))
+            {
+                while (getline(train_out, train_val))
+                {
+                    line++;
+                    if (line == 3)
+                    {
+                        old_seat = train_val;
+                        seat = (to_string)(stoi(train_val.substr(17, train_val.length() - 17)) - 1);
+                        new_seat = "Number of seats: " + seat;
+                    }
+                    
+                }
+                
+            }
+            train_out.close();
+            update(old_seat, new_seat);
+        }
+    }
+    void update(string old_line, string new_line)
+    {
+        string line;
+        ifstream trainIn("train_details.txt");
+        ofstream tempFile("tempFile.txt");
+
+        while (getline(trainIn, line))
+        {
+            (line == old_line) ? tempFile << new_line << '\n' : tempFile << line << '\n';
+
+            trainIn.close();
+            tempFile.close();
+            remove("train_details.txt");
+            remove("tempFile.txt");
+        }
+    }
+
 };
 
 #endif // ADMINISTRATOR_H
