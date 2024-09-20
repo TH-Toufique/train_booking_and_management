@@ -16,14 +16,12 @@ class Authentication
         ofstream file_out; 
 
     public:
-        bool signUp(int type) //need to define the type else bool functions won't properly
+        bool signUp(char type) //need to define the type else bool functions won't properly
         {
             file_out.open("login.txt", ios :: out | ios :: app ); //handle file output
             file_in.open("login.txt", ios :: in); //handle file input
-            cout << "Enter admin username: " << endl;
+            cout << "Enter admin name: " << endl;
             cin >> admin;
-        
-        label:
             cout << "Enter username: ";
             cin >> username;
             string check_username;
@@ -32,16 +30,15 @@ class Authentication
                 if (check_username == "Username: " + username)
                 {
                     cout << "Username already exist!!!";
-                    goto label;
                 }
             }
             cout << "Enter password: ";
             cin >> password;
-            if (type == 1)
+            if (type == '1')
             {
                 file_out << "Type: admin" << endl; // determining the type if logged in person is user or admin
             }
-            else if (type == 2)
+            else if (type == '2')
             {
                 file_out << "Type: user" << endl; // determining the type if logged in person is user or admin
             }
@@ -53,7 +50,7 @@ class Authentication
             file_in.close(); // CLosing the stream
             return true;
         }
-        bool login(int type)
+        bool login(char type)
         {
             file_in.open("login.txt", ios :: in);
             cout << "Enter Username: ";
@@ -98,19 +95,18 @@ class Authentication
 
 void print_name()
 {
-    cout << "Hello" << Name << endl;
+    cout << "Hello " << Name << endl;
 }
 
 // For users
-void handlingBooking(int userType)
+void handlingBooking(char userType)
 {
     Authentication authentication;
-    int choice;
+    string choice;
     cin >> choice;
 
-    switch (choice)
-    {
-        case 1:
+        if (choice == "1")
+        {
             cout << "*******************************************************" << endl;
             cout << "                    Sign Up                            " << endl;
             cout << "*******************************************************" << endl;
@@ -120,19 +116,18 @@ void handlingBooking(int userType)
                 system("pause");
                 exit(0);
             }
-            break;
+        }
         
-        case 2:
             cout << "*******************************************************" << endl;
             cout << "                    Login Page                         " << endl;
             cout << "*******************************************************" << endl;
-            string flag = (userType == 1) ? "admin" : "user"; //ternary operator to assign a value to the flag variable based on the value of userType
+            string flag = (userType == '1') ? "admin" : "user"; //ternary operator to assign a value to the flag variable based on the value of userType
             retry_login:
             if (authentication.login(userType))
             {
                 cout << "Logged in successfully" << endl;
                 system("pause");
-                flag = (userType == 1) ? "admin" : "user";
+                flag = (userType == '1') ? "admin" : "user";
             }
             else
             {
@@ -140,6 +135,4 @@ void handlingBooking(int userType)
                 system("pause");
                 goto retry_login;
             }
-            break;
-    }
-}
+        }

@@ -20,7 +20,7 @@ private:
         train_in.open("train_details.txt", ios::app);  // Writing to file
         train_in << "Train number: " << train_number << endl;
         train_in << "Name of train: " << train_name << endl;
-        train_in << "Number of seats" << number_of_seats << endl;
+        train_in << "Number of seats: " << number_of_seats << endl;
         train_in << "Route: " << route << endl;
         train_in << "Train time: " << train_time << endl;
         train_in << "Fare: " << fare << endl;
@@ -91,7 +91,9 @@ public:
             {
                 cout << train_misc << endl;
                 found = true;
-                while (getline(train_out, train_misc))
+                getline(train_out, train_misc_value);
+                cout << "\n" << train_misc_value << endl;
+                while (getline(train_out, train_misc_value))
                 {   
                     cout << train_misc << endl;
                     if (train_misc == "___________________________")
@@ -106,9 +108,13 @@ public:
         {
             cout << "Train not found" << endl;
         }
+        else
+        {
         /*This extracts a substring from train_misc_value starting from index 14, 
         and goes until the end of the string*/
         return search + train_misc_value.substr(14, train_misc_value.length() -14);
+        }
+        return "";
     }
 
     // Delete a train

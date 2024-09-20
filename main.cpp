@@ -1,11 +1,9 @@
 #include<iostream>
 #include<cstdlib> // Perform system based processes
 #include "source/headers.h"
-#include "source/administrator.h"
 #include "source/handlingBooking.h"
 
 using namespace std;
-
 void banner()
 {
     #ifdef _WIN32
@@ -56,7 +54,7 @@ void loginPage()
     cout << "2. User" << endl;
     cout << "0. Exit" << endl;
     cout << "*******************************************************" << endl;
-    cout << "Select an option: " << endl;
+    cout << "Select an option: ";
     // cout << "" << endl;
     // cout << "" << endl;
 }
@@ -71,17 +69,19 @@ void loginPage_2()
     cout << "2. Login to existing account" << endl;
     cout << "0. Exit" << endl;
     cout << "*******************************************************" << endl;
-    cout << "Select an option: " << endl;
+    cout << "Select an option: ";
 }
 
 int main()
 {
+    train_Management train_manage;
+    handling_Booking handle_booking;
     string flag;
-    int make_choice;
+    char make_choice;
     loginPage();
     cin >> make_choice;
 
-    if (make_choice == 1 || make_choice == 2)
+    if (make_choice == '1' || make_choice == '2')
     {
         #ifdef _WIN32
         system("cls"); // Clear powershell or windows terminal
@@ -91,15 +91,17 @@ int main()
         banner();
         loginPage_2();
         handlingBooking(make_choice);
-        flag = (make_choice == 1) ? "admin" : "user";
+        flag = (make_choice == '1') ? "admin" : "user";
     }
-    else if (make_choice == 0)
+    else if (make_choice == '0')
     {   
-        //nop
+        exit(0);
     }
     else
     {
-        cout << "Invalid choice. Closing the program";
+        cout << "Invalid choice. Exiting..." << endl;
+        system("pause");
+        exit(0);
     }
     
     char selection;
