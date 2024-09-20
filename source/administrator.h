@@ -32,7 +32,7 @@ public:
     // Add train details
     void add_train()
     {
-        cout << "Enter train number: ";
+        cout << "Enter train number(4 digits): ";
         cin >> train_number;
         cin.ignore(); // Ignore the new line character
 
@@ -40,7 +40,7 @@ public:
         getline(cin, train_name);
         cout << "Enter route: ";
         getline(cin, route);
-        cout << "Enter train timings: ";
+        cout << "Enter train timings(eg. 6:00pm-7:00am): ";
         cin >> train_time;
         cout << "Enter number of seats: ";
         cin >> number_of_seats;
@@ -107,6 +107,7 @@ public:
         if (!found)
         {
             cout << "Train not found" << endl;
+            return "";
         }
         else
         {
@@ -114,7 +115,7 @@ public:
         and goes until the end of the string*/
         return search + train_misc_value.substr(14, train_misc_value.length() -14);
         }
-        return "";
+
     }
 
     // Delete a train
@@ -167,7 +168,7 @@ public:
         }
     }
 
-    void booked_seats(string train_number)
+    void booked_seats(string train_number, int numberOfPassenger)
     {
         train_out.open("Train_details.txt", ios :: app);
         string old_seat, new_seat, train_val, seat;
@@ -182,7 +183,7 @@ public:
                     if (line == 3)
                     {
                         old_seat = train_val;
-                        seat = (to_string)(stoi(train_val.substr(17, train_val.length() - 17)) - 1);
+                        seat = (to_string)(stoi(train_val.substr(17, train_val.length() - 17)) - numberOfPassenger);
                         new_seat = "Number of seats: " + seat;
                     }
                     
@@ -193,6 +194,29 @@ public:
             update(old_seat, new_seat);
         }
     }
+
+    int getFare(string TrainNumber)
+    {
+        train_out.open("TrainFile.txt", ios::in);
+        string y;
+        int line = 0;
+        while (getline(train_out, y))
+        {
+            if (y == ("Train number: " + TrainNumber))
+            {
+                while (getline(train_out, y))
+                {
+                    line++;
+                    if (line == 5)
+                    {
+                        train_out.close();
+                        return stoi(y.substr(5, y.length() - 5));
+                    }
+                }
+            }
+        }
+    }
+
     void update(string old_line, string new_line)
     {
         string line;
@@ -211,5 +235,43 @@ public:
     }
 
 };
+
+
+void seatNumberShow() {
+    #ifdef _WIN32
+    system("cls"); // Clear powershell or windows terminal
+    #else
+    system("clear"); // For clearing the terminal
+    #endif
+    cout <<"--------------------------------------------------------------------------" << endl;
+    cout << "                         -----SEAT NUMBER-----                           " << endl;
+    cout << "-------------------------------------------------------------------------" << endl;
+    cout << "SL         SU          LB          MB          UB" << endl << endl;
+    cout << "01         02          03          04          05" << endl;
+    cout << "06         07          08          09          10" << endl;
+    cout << "11         12          13          14          15" << endl;
+    cout << "16         17          18          19          20" << endl;
+    cout << "21         22          23          24          25" << endl;
+    cout << "26         27          28          29          30" << endl;
+    cout << "31         32          33          34          35" << endl;
+    cout << "36         37          38          39          40" << endl;
+    cout << "41         42          43          44          45" << endl;
+    cout << "46         47          48          49          50" << endl;
+    cout << "51         52          53          54          55" << endl << endl;
+    cout << "Choose the seat number: ";
+}
+void paymentPage(int amount) {
+    cout << "-------------------------------------------------------------------------" << endl;
+    cout << "                         -----PAYMENT PAGE-----                          " << endl;
+    cout << "-------------------------------------------------------------------------" << endl;
+    cout << "Total Amount is TK. "<< amount<< endl << endl;
+    cout << "Choose the mode of payment ... " << endl << endl;
+    cout << "1. Cash\n\n";
+    cout << "2. Card\n\n";
+    cout << "3. Bkash\n\n";
+    cout << "-------------------------------------------------------------------------" << endl;
+    cout << "Select an option: ";
+}
+
 
 #endif // ADMINISTRATOR_H
