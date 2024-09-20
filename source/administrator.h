@@ -10,7 +10,7 @@ using namespace std;
 class train_Management
 {
 private:
-    string train_number, number_of_seats,train_name,route, train_time, fare;
+    string train_number, number_of_seats, train_name, route, train_time, fare, line, y;
     ofstream train_in;
     ifstream train_out;
 
@@ -77,26 +77,22 @@ public:
             return 0;
         }
 
-        string search;
         cout << "Enter train number: ";
-        cin >> search;
-        string train_misc;
-        string train_misc_value;
+        cin >> train_number;
 
         bool found = false;
 
-        while (getline(train_out, train_misc))
+        while (getline(train_out, line))
         {
-            if (train_misc == "Train number: " + search)
+            if (line == "Train number: " + train_number)
             {
-                cout << train_misc << endl;
                 found = true;
-                getline(train_out, train_misc_value);
-                cout << "\n" << train_misc_value << endl;
-                while (getline(train_out, train_misc_value))
+                getline(train_out, line);
+                cout << "\n" << y << endl;
+                while (getline(train_out, y))
                 {   
-                    cout << train_misc << endl;
-                    if (train_misc == "___________________________")
+                    cout << line << endl;
+                    if (line == "___________________________")
                     {
                         break;
                     }
@@ -107,13 +103,11 @@ public:
         if (!found)
         {
             cout << "Train not found" << endl;
-            return "";
+            system("pause");
         }
         else
         {
-        /*This extracts a substring from train_misc_value starting from index 14, 
-        and goes until the end of the string*/
-        return search + train_misc_value.substr(14, train_misc_value.length() -14);
+            return train_number + y.substr(14, y.length() - 14);
         }
 
     }
@@ -127,17 +121,15 @@ public:
             return;
         }
 
-        string search;
         cout << "Enter train number: ";
-        cin >> search;
+        cin >> train_number;
 
-        string line;
         ofstream tempFile("tempFile.txt");
         bool train_found = false;
 
         while (getline(train_in, line))
         {
-            if (line == "Train number: " + search)
+            if (line == "Train number: " + train_number)
             {
                 train_found = true;
                 while (getline(train_in, line))
@@ -168,23 +160,23 @@ public:
         }
     }
 
-    void booked_seats(string train_number, int numberOfPassenger)
+    void booked_seats(string TrainNumber, int number_of_passenger_on_booking, int number_of_passenger_on_cancelling)
     {
         train_out.open("Train_details.txt", ios :: app);
-        string old_seat, new_seat, train_val, seat;
+        string old_seat, new_seat;
         int line = 0;
-        while (getline(train_out, train_val))
+        while (getline(train_out, y))
         {
-            if (train_val ==("Train Number: " + train_number))
+            if (y ==("Train Number: " + train_number))
             {
-                while (getline(train_out, train_val))
+                while (getline(train_out, y))
                 {
                     line++;
                     if (line == 3)
                     {
-                        old_seat = train_val;
-                        seat = (to_string)(stoi(train_val.substr(17, train_val.length() - 17)) - numberOfPassenger);
-                        new_seat = "Number of seats: " + seat;
+                        old_seat = y;
+                        number_of_seats = (to_string)(stoi(y.substr(17, y.length() - 17)) - number_of_passenger_on_booking + number_of_passenger_on_cancelling);
+                        new_seat = "Number of seats: " + number_of_seats;
                     }
                     
                 }
@@ -198,7 +190,6 @@ public:
     int getFare(string TrainNumber)
     {
         train_out.open("TrainFile.txt", ios::in);
-        string y;
         int line = 0;
         while (getline(train_out, y))
         {
@@ -219,7 +210,6 @@ public:
 
     void update(string old_line, string new_line)
     {
-        string line;
         ifstream trainIn("train_details.txt");
         ofstream tempFile("tempFile.txt");
 
@@ -273,5 +263,12 @@ void paymentPage(int amount) {
     cout << "Select an option: ";
 }
 
+void passwordMenu(){
+    system("cls");
+    cout << "-------------------------------------------------------------------------" << endl;
+    cout << "                         -----CHANGE PASSWORD-----                       " << endl;
+    cout << "-------------------------------------------------------------------------" << endl;
+    cout << "Enter your old password: ";
+}
 
 #endif // ADMINISTRATOR_H

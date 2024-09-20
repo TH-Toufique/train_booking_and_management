@@ -2,12 +2,13 @@
 #include<fstream> //Stream class to both read and write from/to files.
 #include<string>
 #include<stdlib.h>
+#include "administrator.h"
 
 using namespace std;
 
 
 
-string Name;
+string Name, temp_password;
 class Authentication
 {
     private:
@@ -95,9 +96,33 @@ class Authentication
 
 void print_name()
 {
-    cout << "Hello " << Name << endl;
+    cout << "Hello " << Name << ", Welcome back!" << endl;
 }
-
+bool changePassword()
+{
+    passwordMenu();
+    string password;
+    cin >> password;
+    if (password == temp_password)
+    {
+        cout << "\nEnter new password: ";
+        cin >> password;
+        string line;
+        ifstream fin("login.txt");
+        ofstream fout("TempFile.txt");
+        while (getline(fin, line))
+            (line == "Password:" + temp_password) ? fout << "Password:" + password << endl : fout << line << endl;
+        fin.close();
+        fout.close();
+        remove("login.txt");
+        rename("TempFile.txt", "login.txt");
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
 // For users
 void handlingBooking(char userType)
 {
@@ -136,3 +161,4 @@ void handlingBooking(char userType)
                 goto retry_login;
             }
         }
+

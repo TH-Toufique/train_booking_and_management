@@ -192,13 +192,22 @@ int main()
                     break;
                 
                 case 5:
-                    cout << "Will be implemented later";
-                    system("pause");
-                    goto retry_6;
-                    break;
+                    bool flag;
+                    flag = changePassword();
+                    if(flag) {
+                        cout << "\n\t\tPassword changed successfully" << endl << endl;
+                        cout << "\t\tLogin again ..." << endl <<endl;
+                        exit(0);
+                    }
+                    else 
+                    {
+                        cout << "Password not changed" << endl;
+                        system("pause");
+                        goto retry_6;
+                    }
 
                 case 6:
-                    cout << "Will be implemented later";
+                    handle_booking.cancelTicket();
                     system("pause");
                     goto retry_6;
                     break;

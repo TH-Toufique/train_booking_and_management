@@ -20,7 +20,7 @@ class handling_Booking : public train_Management  // Inherit trainManagement fro
 		    if (userCount == 1)
 		    {
 			    file_out << "Train : " << train_info << endl;
-			    file_out << "Ticket inquiry number: " << train_inquiry << endl << endl;
+			    file_out << "Total number of passengers: " << number_of_passenger << endl << endl;
 		    }
             file_out << "Passenger name: " << name_of_passenger << endl;
 		    file_out << "Gender: " << gender << "      Age: " << age << endl;
@@ -29,6 +29,7 @@ class handling_Booking : public train_Management  // Inherit trainManagement fro
 		    {
 			    file_out << "_________________________" << endl;
 		    }
+            else file_out << endl;
             file_out.close();
             file_in.close();
         }
@@ -72,7 +73,7 @@ class handling_Booking : public train_Management  // Inherit trainManagement fro
 		cout << "Please note down your TIN number for further reference: " << endl;
 		cout << "\t\tTicket inquiry number: " << train_inquiry << endl << endl;
         }
-        
+
         void view_bookings()
         {
             file_in.open("booked_tickets.txt", ios :: out);
@@ -106,4 +107,54 @@ class handling_Booking : public train_Management  // Inherit trainManagement fro
             }
             file_in.close();
         }
+
+    void cancelTicket()
+    {
+        ifstream readTicket("tickets.txt");
+        string search, line;
+        cout << "Enter ticket inquiry number: ";
+        cin >> search;
+		while(getline(readTicket, line)){
+			if (line == "Ticket inquiry number: " + search){
+				string tn, nop, y;
+				getline(readTicket,y);
+				tn = y.substr(8,4); 
+				getline(readTicket,y);
+				nop = y.substr(28,1);
+				cout<<tn<<nop<<endl;
+				booked_seats(tn, 0);
+			}
+		}
+		readTicket.close();
+		ifstream trainIn("tickets.txt");
+        ofstream tempFile("temp_file.txt");
+        bool found = false;
+        while (getline(trainIn, line))
+        {
+            if (line == "Ticket inquiry number: " + search)
+            {
+				found = true;
+                while (getline(trainIn, line))
+                {
+                    if (line == "_________________________")
+                        break;
+                }
+            }
+            else
+            {
+                tempFile << line << '\n';
+            }
+        }
+        trainIn.close();
+        tempFile.close();
+        if (!found)
+            cout << "Ticket not found in the file." << endl;
+        else
+        {
+            remove("Tickets.txt");
+            rename("TempFile.txt", "Tickets.txt");
+            cout << "Ticket cancelled successfully." << endl;
+        }
+    }
+
 };
