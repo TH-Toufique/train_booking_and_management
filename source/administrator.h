@@ -9,11 +9,10 @@ using namespace std;
 
 class train_Management
 {
-private:
-    string train_number, number_of_seats, train_name, route, train_time, fare, line, y;
+public:
+    string train_number, train_name, train_route, number_of_seats, train_time, train_fare, line, y; // line & y are used to store the data temporarily
     ofstream train_in;
     ifstream train_out;
-
     // Store train data in the file
     void trainData()
     {
@@ -21,9 +20,9 @@ private:
         train_in << "Train number: " << train_number << endl;
         train_in << "Name of train: " << train_name << endl;
         train_in << "Number of seats: " << number_of_seats << endl;
-        train_in << "Route: " << route << endl;
+        train_in << "Route: " << train_route << endl;
         train_in << "Train time: " << train_time << endl;
-        train_in << "Fare: " << fare << endl;
+        train_in << "Fare: " << train_fare << endl;
         train_in << "___________________________" << endl;  // Dividing details
         train_in.close();
     }
@@ -32,20 +31,31 @@ public:
     // Add train details
     void add_train()
     {
+        return_loop:
         cout << "Enter train number(4 digits): ";
         cin >> train_number;
+                train_out.open("TrainFile.txt", ios::in);
+        while (getline(train_out, line))
+        {
+            if (line == ("Train number: " + train_number))
+            {
+                cout << "Train already exists" << endl;
+                train_out.close();
+                goto return_loop;
+            }
+        }
         cin.ignore(); // Ignore the new line character
 
         cout << "Enter train name: ";
         getline(cin, train_name);
         cout << "Enter route: ";
-        getline(cin, route);
+        getline(cin, train_route);
         cout << "Enter train timings(eg. 6:00pm-7:00am): ";
         cin >> train_time;
         cout << "Enter number of seats: ";
         cin >> number_of_seats;
         cout << "Enter fare: ";
-        cin >> fare;
+        cin >> train_fare;
         trainData();
     }
 
@@ -58,9 +68,9 @@ public:
             return;
         }
         string train_list;
-        while (getline(train_out, train_list))
+        while (getline(train_out, y))
         {
-            cout << train_list << endl;
+            cout << y << endl;
         }
         train_out.close();
     }
@@ -164,15 +174,15 @@ public:
     {
         train_out.open("Train_details.txt", ios :: app);
         string old_seat, new_seat;
-        int line = 0;
+        int i = 0;
         while (getline(train_out, y))
         {
             if (y ==("Train Number: " + train_number))
             {
                 while (getline(train_out, y))
                 {
-                    line++;
-                    if (line == 3)
+                    i++;
+                    if (i == 3)
                     {
                         old_seat = y;
                         number_of_seats = (to_string)(stoi(y.substr(17, y.length() - 17)) - number_of_passenger_on_booking + number_of_passenger_on_cancelling);
@@ -190,15 +200,15 @@ public:
     int getFare(string TrainNumber)
     {
         train_out.open("TrainFile.txt", ios::in);
-        int line = 0;
+        int i = 0;
         while (getline(train_out, y))
         {
             if (y == ("Train number: " + TrainNumber))
             {
                 while (getline(train_out, y))
                 {
-                    line++;
-                    if (line == 5)
+                    i++;
+                    if (i == 5)
                     {
                         train_out.close();
                         return stoi(y.substr(5, y.length() - 5));
@@ -226,6 +236,82 @@ public:
 
 };
 
+
+class updateTrain : public train_Management
+{
+public:
+    void dataUpdate()
+    {
+        search_train();
+        train_out.open("TrainFile.txt", ios::in);
+        while (getline(train_out, y))
+        {
+            if (y == ("Train number: " + train_number))
+            {
+                train_number = y;
+                getline(train_out, y);
+                train_name = y;
+                getline(train_out, y);
+                train_route = y;
+                getline(train_out, y);
+                number_of_seats = y;
+                getline(train_out, y);
+                train_time = y;
+                getline(train_out, y);
+                train_fare = y;
+            }
+        }
+        train_out.close();
+    }
+    void updateTrainNumber()
+    {
+        string new_train_number;
+        cout << "Enter new train number: ";
+        cin >> new_train_number;
+        update(train_number, "Train number: " + new_train_number);
+    }
+    void update_train_name()
+    {
+        string newtrain_name;
+        cout << "Enter new train name: ";
+        cin.ignore();
+        getline(cin, newtrain_name);
+        update(train_name, "Train name: " + newtrain_name);
+        cout << "Train name updated successfully." << endl;
+    }
+    void update_train_route()
+    {
+        string newtrain_route;
+        cout << "Enter new train route: ";
+        getline(cin, newtrain_route);
+        update(train_route, "Train route: " + newtrain_route);
+        cout << "Train route updated successfully." << endl;
+    }
+    void update_number_of_seats()
+    {
+        string newTrainnumber_of_seats;
+        cout << "Enter new number of seats: ";
+        cin >> newTrainnumber_of_seats;
+        update(number_of_seats, "Number of seats: " + newTrainnumber_of_seats);
+        cout << "Number of seats updated successfully." << endl;
+    }
+    void updatetrain_time()
+    {
+        string newtrain_time;
+        cout << "Enter new time: ";
+        cin >> newtrain_time;
+        update(train_time, "Time: " + newtrain_time);
+        cout << "Time updated successfully." << endl;
+    }
+    void update_train_fare()
+    {
+        string newtrain_fare;
+        cout << "Enter new fare: ";
+        cin >> newtrain_fare;
+        update(train_fare, "Fare: " + newtrain_fare);
+        cout << "Fare updated successfully." << endl;
+    }
+};
 
 void seatNumberShow() {
     #ifdef _WIN32
@@ -264,11 +350,34 @@ void paymentPage(int amount) {
 }
 
 void passwordMenu(){
-    system("cls");
+    #ifdef _WIN32
+    system("cls"); // Clear powershell or windows terminal
+    #else
+    system("clear"); // For clearing the terminal
+    #endif
     cout << "-------------------------------------------------------------------------" << endl;
     cout << "                         -----CHANGE PASSWORD-----                       " << endl;
     cout << "-------------------------------------------------------------------------" << endl;
     cout << "Enter your old password: ";
+}
+
+void updateTrainMenu() 
+{
+    #ifdef _WIN32
+    system("cls"); // Clear powershell or windows terminal
+    #else
+    system("clear"); // For clearing the terminal
+    #endif
+    cout << "-------------------------------------------------------------------------" << endl;
+    cout << "                         -----UPDATE TRAIN-----" << endl;
+    cout << "-------------------------------------------------------------------------" << endl;
+    cout << "What do you want to update?" << endl << endl;
+    cout << "1. Train Number                                    2. Train Name\n\n";
+    cout << "3. Train Route                                     4. Number of Seats\n\n";
+    cout << "5. Train Time                                      6. Fare\n\n";
+    cout << "0. Return to Main menu\n\n";
+    cout << "-------------------------------------------------------------------------" << endl;
+    cout << "Select an option: ";
 }
 
 #endif // ADMINISTRATOR_H

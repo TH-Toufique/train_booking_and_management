@@ -69,7 +69,7 @@ class handling_Booking : public train_Management  // Inherit trainManagement fro
 		paymentPage(getFare(train_info.substr(0, 4)) * number_of_passenger);
 		cin >> fare;
 		cout <<"Payment done successfully"<< endl << endl;
-		booked_seats(train_info.substr(0, 4), number_of_passenger);
+		booked_seats(train_info.substr(0, 4), number_of_passenger, 0);
 		cout << "Please note down your TIN number for further reference: " << endl;
 		cout << "\t\tTicket inquiry number: " << train_inquiry << endl << endl;
         }
@@ -122,7 +122,7 @@ class handling_Booking : public train_Management  // Inherit trainManagement fro
 				getline(readTicket,y);
 				nop = y.substr(28,1);
 				cout<<tn<<nop<<endl;
-				booked_seats(tn, 0);
+				booked_seats(tn, 0, stoi(nop));
 			}
 		}
 		readTicket.close();

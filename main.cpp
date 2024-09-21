@@ -1,6 +1,7 @@
 #include<iostream>
 #include<cstdlib> // Perform system based processes
 #include "source/headers.h"
+#include "administrator.h"
 #include "source/handlingBooking.h"
 
 using namespace std;
@@ -122,6 +123,7 @@ int main()
         switch (choice)
         {
             case 1:
+            {
             retry_4:
                 tm.add_train();
                 cout << "Do you want to add more train? (y/n): ";
@@ -135,26 +137,89 @@ int main()
                     goto retry_3;
                 }
                 break;
-
+            }
             case 2:
+            {
                 tm.view_trains();
-                break;
-            
-            case 3:
-                tm.search_train();
-                break;
-            
-            case 4:
-                handle_booking.view_bookings();
+                system("pause");
                 goto retry_3;
                 break;
-
-            case 5:
-                tm.delete_train();
+            }
+            case 3:
+            {
+                tm.search_train();
+                system("pause");
+                goto retry_3;
                 break;
-            
+            }
+            case 4:
+            {
+                handle_booking.view_bookings();
+                system("pause");
+                goto retry_3;
+                break;
+            }
+            case 5:
+            {
+                retry_5:
+                tm.delete_train();
+                cout << "Do you want to delete more?(y/n)";
+                char option;
+                if (option == 'y'  | option == 'Y')
+                {
+                    goto retry_5;
+                }
+                else
+                {
+                    goto retry_3;
+                }   
+                break;
+            }
+            case 6:
+            {
+                updateTrain ut;
+                ut.dataUpdate();
+                system("pause");
+                updateTrainMenu();
+                char subChoice;
+                cin>>subChoice;
+                if(subChoice == '1') {
+                    ut.updateTrainNumber();
+                    system("pause");
+                }
+                else if(subChoice == '2') {
+                    ut.update_train_name();
+                    system("pause");
+                }
+                else if(subChoice == '3') {
+                    ut.update_train_route();
+                    system("pause");
+                }
+                else if(subChoice == '4') {
+                    ut.update_number_of_seats();
+                    system("pause");
+                }
+                else if(subChoice == '5') {
+                    ut.update_train_fare();
+                    system("pause");
+                }
+                else if(subChoice == '0') {
+                    goto retry_3;
+                }
+                else {
+                    cout << "Invalid choice...." << endl;
+                    system("pause");
+                    }
+                    goto retry_3;
+            }
             case 0:
                 exit(0);
+            default:
+            {
+                cout << "Invalid choice...." << endl;
+                system("pause");
+                goto retry_3;
+            }
         }
     }
 
