@@ -1,3 +1,5 @@
+#ifndef MISC_HANDLER_H
+#define MISC_HANDLER_H
 #include<iostream>
 #include<string>
 #include<cstdlib> // Perform system based processes
@@ -139,3 +141,4 @@ void updateTrainMenu() {
     cout << "**********************************************************" << endl;
     cout << "Select an option: ";
 }
+#endif // MISC_HANDLER_H

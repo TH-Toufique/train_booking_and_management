@@ -14,7 +14,7 @@ int main()
     string flag;
     char userChoice;
     system("pause");
-login_page_1:
+    login_page_1:
     print_header();
     login_page_1();
     cin >> userChoice;
@@ -45,7 +45,7 @@ login_page_1:
     // admin section
     if (flag == "admin")
     {
-    loop_back_1:
+    retry3:
         print_header();
         print_name();
         admin_menu();
@@ -53,118 +53,109 @@ login_page_1:
         cin >> choice;
         switch (choice)
         {
-        case '1':
+        case '1': //add train
         {
-        loop_back:
+            retry4:
             train_manage.add_train();
             char option;
-            cout << "Do you want to add more train? (y/n): ";
+            cout << "Do you want to add more?(y/n)";
             cin >> option;
             if (option == 'y' || option == 'Y')
             {
-                goto loop_back;
+                goto retry4;
             }
             else
-            {
-                goto loop_back_1;
-                break;
-            }
-        }
-        case '2': // display train
-        {
-            train_manage.viewTrains();
-            system("pause");
-            goto loop_back_1;
+                goto retry3;
             break;
         }
-        case '3': // search train
+        case '2': //display train
+        {    
+            train_manage.viewTrains();
+            system("pause");
+            goto retry3;
+            break;
+        }
+        case '3': //search train
         {
             train_manage.searchTrain();
             system("pause");
-            goto loop_back_1;
+            goto retry3;
             break;
         }
-        case '4': // display bookings
+        case '4': //display bookings
         {
             train_book.viewBookings();
             system("pause");
-            goto loop_back_1;
+            goto retry3;
             break;
         }
-        case '5': // delete train
+        case '5': //delete train
         {
-        loop_back_2:
+        retry5:
             train_manage.deleteTrain();
             cout << "Do you want to delete more?(y/n)";
             char option;
             cin >> option;
             if (option == 'y' || option == 'Y')
             {
-                goto loop_back_2;
+                goto retry5;
             }
             else
-                goto loop_back_1;
+                goto retry3;
             break;
-        }
-        case '6': // update train
+        }    
+        case '6': //update train
         {
             updateTrain ut;
             ut.dataUpdate();
             system("pause");
             updateTrainMenu();
             char subChoice;
-            cin >> subChoice;
+            cin>>subChoice;
 
-            if (subChoice == '1')
-            {
+            if(subChoice == '1') {
                 ut.updateTrainNumber();
                 system("pause");
             }
-            else if (subChoice == '2')
-            {
+            else if(subChoice == '2') {
                 ut.updateTrainName();
                 system("pause");
             }
-            else if (subChoice == '3')
-            {
+            else if(subChoice == '3') {
                 ut.updateTrainRoute();
                 system("pause");
             }
-            else if (subChoice == '4')
-            {
+            else if(subChoice == '4') {
                 ut.updateTrainNumberOfSeats();
                 system("pause");
             }
-            else if (subChoice == '5')
-            {
+            else if(subChoice == '5') {
                 ut.updateTrainFare();
                 system("pause");
             }
-            else if (subChoice == '0')
-            {
-                goto loop_back_1;
+            else if(subChoice == '0') {
+                goto retry3;
             }
-            else
-            {
+            else {
                 cout << "Invalid choice...." << endl;
                 system("pause");
             }
-            goto loop_back_1;
-        }
-        case '0': // logout
+            goto retry3;
+        }    
+        case '0': //logout
             exit(0);
         default:
         {
             cout << "Invalid choice...." << endl;
             system("pause");
-            goto loop_back_1;
+            goto retry3;
         }
         }
     }
     // for user
     if (flag == "user")
     {
-    loop_back_3:
+    retry6:
         print_header();
         print_name();
         user_menu();
@@ -175,22 +166,22 @@ login_page_1:
         case '1': //display train
             train_manage.viewTrains();
             system("pause");
-            goto loop_back_3;
+            goto retry6;
             break;
         case '2': //search train
             train_manage.searchTrain();
             system("pause");
-            goto loop_back_3;
+            goto retry6;
             break;
         case '3': //book ticket
             train_book.bookTicket();
             system("pause");
-            goto loop_back_3;
+            goto retry6;
             break;
         case '4': //print ticket
             searchBooking();
             system("pause");
-            goto loop_back_3;
+            goto retry6;
             break;
         case '5': //change password
             bool flag;
@@ -202,20 +193,20 @@ login_page_1:
             }else {
                 cout << "Password not changed" << endl;
                 system("pause");
-                goto loop_back_3;
+                goto retry6;
             }
             break;
         case '6': //cancel ticket
             train_book.cancelTicket();
             system("pause");
-            goto loop_back_3;
+            goto retry6;
             break;
         case '0': //logout
             exit(0);
         default:
             cout << "Invalid choice...." << endl;
             system("pause");
-            goto loop_back_3;
+            goto retry6;
         }
     }
     return 0;

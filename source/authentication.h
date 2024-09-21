@@ -17,39 +17,39 @@ class Authentication
 
 
     public:
-        bool signup(char type)
+    bool signup(char type)
+    {
+        file_out.open("login.txt", ios::out | ios::app);
+        file_in.open("login.txt", ios::in);
+    label:
+        cout << "\nEnter username: ";
+        cin >> username;
+        string x;
+        while (file_in >> x)
         {
-            file_out.open("login.txt", ios :: out | ios :: app);
-            file_in.open("login.txt", ios :: in);
-
-        loop_back:
-            cout << "Enter username: ";
-            cin >> username;
-            string x;
-            while (file_in >> x)
+            if (x == "Username:" + username)
             {
-                if (x == "Username: " + username);
-                {
-                    cout << "Username already exists";
-                    goto loop_back;
-                }
+                cout << "Username already exists";
+                goto label;
             }
-            cout << "\nEnter Password";
-            cin >> password;
-            if (type == '1')
-            {
-                file_out << "Type: admin" << endl;
-            }
-            else if (type == '2')
-            {
-                file_out << "Type: user" << endl;
-            }
-            file_out << "Username: " << username << endl;
-            file_out << "Password: " << password << endl;
-            file_out.close();
-            file_in.close();
-            return true;
         }
+        cout << "\nEnter password: ";
+        cin >> password;
+        if (type == '1')
+        {
+            file_out << "Type: admin" << endl;
+        }
+        else if (type == '2')
+        {
+            file_out << "Type: user" << endl;
+        }
+        file_out << "Username:" << username << endl;
+        file_out << "Password:" << password << endl
+             << endl;
+        file_out.close();
+        file_out.close();
+        return true;
+    }
         bool login(char type)
         {
             file_in.open("login.txt", ios :: in);
