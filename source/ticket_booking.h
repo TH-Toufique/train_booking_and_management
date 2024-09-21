@@ -3,6 +3,7 @@
 #include <string>
 #include <ctime>
 #include "administrator.h"
+#include "misc_handler.h"
 
 using namespace std;
 
@@ -36,100 +37,104 @@ private:
         file_out.close();
         file_in.close();
     }
-};
 
 public:
-void bookTicket()
-{
-    srand(time(0));
-    tin = rand() % 9000 + 1000; // train inquiry number
-    train_info = searchTrain();
-    cout << "Number of Passenger: ";
-    cin >> numberOfPassenger;
-    cout << "Boarding Station: ";
-    cin >> boardingStation;
-    for (userCount = 1; userCount <= numberOfPassenger; userCount++)
+    void bookTicket()
     {
-        cout << "Enter name of " << userCount << "th passenger: ";
-        cin.ignore();
-        getline(cin, nameOfPassenger);
-        cout << "Gender :";
-        cin >> gender;
-        cout << "Age :";
-        cin >> age;
-        seatNumberShow();
-        cin >> seat;
-        storeInFile();
-    }
-    system("cls");
-    paymentPage(getFare(train_info.substr(0, 4)) * numberOfPassenger);
-    cin >> fare;
-    cout << "Payment done successfully" << endl
-         << endl;
-    seatBooked(train_info.substr(0, 4), numberOfPassenger, 0);
-    cout << "Please note down your TIN number for further reference: " << endl;
-    cout << "\t\tTicket inquiry number: " << tin << endl
-         << endl;
-}
-void viewBookings()
-{
-    fin.open("Tickets.txt", ios::out);
-    string x;
-    while (getline(fin, x))
-    {
-        cout << x << endl;
-    }
-    fin.close();
-}
-
-void cancelTicket()
-{
-    ifstream readTicket("Tickets.txt");
-    string search, line;
-    cout << "Enter ticket inquiry number: ";
-    cin >> search;
-    while (getline(readTicket, line))
-    {
-        if (line == "Ticket inquiry number: " + search)
+        srand(time(0));
+        tin = rand() % 9000 + 1000; // train inquiry number
+        train_info = searchTrain();
+        cout << "Number of Passenger: ";
+        cin >> numberOfPassenger;
+        cout << "Boarding Station: ";
+        cin >> boardingStation;
+        for (userCount = 1; userCount <= numberOfPassenger; userCount++)
         {
-            string tn, nop, y;
-            getline(readTicket, y);
-            tn = y.substr(8, 4);
-            getline(readTicket, y);
-            nop = y.substr(28, 1);
-            cout << tn << nop << endl;
-            seatBooked(tn, 0, stoi(nop));
+            cout << "Enter name of " << userCount << "th passenger: ";
+            cin.ignore();
+            getline(cin, nameOfPassenger);
+            cout << "Gender :";
+            cin >> gender;
+            cout << "Age :";
+            cin >> age;
+            seat_number_show();
+            cin >> seat;
+            storeInFile();
         }
+#ifdef _WIN32
+        system("cls"); // Clear powershell or windows terminal
+#else
+        system("clear"); // For clearing the terminal
+#endif
+        payment_page(getFare(train_info.substr(0, 4)) * numberOfPassenger);
+        cin >> fare;
+        cout << "Payment done successfully" << endl
+             << endl;
+        seatBooked(train_info.substr(0, 4), numberOfPassenger, 0);
+        cout << "Please note down your TIN number for further reference: " << endl;
+        cout << "\t\tTicket inquiry number: " << tin << endl
+             << endl;
     }
-    readTicket.close();
-
-    ifstream train_in("Tickets.txt");
-    ofstream temp_file("TempFile.txt");
-    bool found = false;
-    while (getline(train_in, line))
+    void viewBookings()
     {
-        if (line == "Ticket inquiry number: " + search)
+        file_in.open("Tickets.txt", ios::out);
+        string x;
+        while (getline(file_in, x))
         {
-            found = true;
-            while (getline(train_in, line))
+            cout << x << endl;
+        }
+        file_in.close();
+    }
+
+    void cancelTicket()
+    {
+        ifstream readTicket("Tickets.txt");
+        string search, line;
+        cout << "Enter ticket inquiry number: ";
+        cin >> search;
+        while (getline(readTicket, line))
+        {
+            if (line == "Ticket inquiry number: " + search)
             {
-                if (line == "_________________________")
-                    break;
+                string tn, nop, y;
+                getline(readTicket, y);
+                tn = y.substr(8, 4);
+                getline(readTicket, y);
+                nop = y.substr(28, 1);
+                cout << tn << nop << endl;
+                seatBooked(tn, 0, stoi(nop));
             }
         }
+        readTicket.close();
+
+        ifstream train_in("Tickets.txt");
+        ofstream temp_file("TempFile.txt");
+        bool found = false;
+        while (getline(train_in, line))
+        {
+            if (line == "Ticket inquiry number: " + search)
+            {
+                found = true;
+                while (getline(train_in, line))
+                {
+                    if (line == "_________________________")
+                        break;
+                }
+            }
+            else
+            {
+                temp_file << line << '\n';
+            }
+        }
+        train_in.close();
+        temp_file.close();
+        if (!found)
+            cout << "Ticket not found in the file." << endl;
         else
         {
-            temp_file << line << '\n';
+            remove("Tickets.txt");
+            rename("TempFile.txt", "Tickets.txt");
+            cout << "Ticket cancelled successfully." << endl;
         }
-    }
-    train_in.close();
-    temp_file.close();
-    if (!found)
-        cout << "Ticket not found in the file." << endl;
-    else
-    {
-        remove("Tickets.txt");
-        rename("TempFile.txt", "Tickets.txt");
-        cout << "Ticket cancelled successfully." << endl;
     }
 };

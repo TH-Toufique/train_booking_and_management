@@ -208,7 +208,7 @@ public:
     }
 };
 
-class updateTrain : public TrainManagement
+class updateTrain : public train_management
 {
 public:
     void dataUpdate()
