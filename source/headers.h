@@ -21,7 +21,7 @@ class Authentication
         {
             file_out.open("login.txt", ios :: out | ios :: app ); //handle file output
             file_in.open("login.txt", ios :: in); //handle file input
-            cout << "Enter admin name: " << endl;
+            cout << "Enter admin name: ";
             cin >> admin;
             cout << "Enter username: ";
             cin >> username;

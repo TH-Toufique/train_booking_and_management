@@ -62,12 +62,7 @@ public:
     // View all trains
     void view_trains()
     {
-        train_out.open("train_details.txt", ios::in);  // Reading from file
-        if (!train_out) {
-            cout << "No trains found!" << endl;
-            return;
-        }
-        string train_list;
+        train_out.open("train_details.txt", ios::out);
         while (getline(train_out, y))
         {
             cout << y << endl;
@@ -75,52 +70,52 @@ public:
         train_out.close();
     }
 
-    // Search for a specific train
-    string search_train()
-    /*value will be returned and in handlingBooking header file 
-    we are using = operator or assign operator which  is essential for assigning values*/
-    {
-        train_out.open("train_details.txt", ios::in);  // Reading from file
+string search_train() {
+    train_out.open("train_details.txt", ios::in);  // Open file for reading
 
-        if (!train_out) {
-            cout << "No trains found!" << endl;
-            return 0;
-        }
-
-        cout << "Enter train number: ";
-        cin >> train_number;
-
-        bool found = false;
-
-        while (getline(train_out, line))
-        {
-            if (line == "Train number: " + train_number)
-            {
-                found = true;
-                getline(train_out, line);
-                cout << "\n" << y << endl;
-                while (getline(train_out, y))
-                {   
-                    cout << line << endl;
-                    if (line == "___________________________")
-                    {
-                        break;
-                    }
-                }
-            }
-        }
-        train_out.close();
-        if (!found)
-        {
-            cout << "Train not found" << endl;
-            system("pause");
-        }
-        else
-        {
-            return train_number + y.substr(14, y.length() - 14);
-        }
-
+    if (!train_out) {
+        cout << "No trains found!" << endl;
+        return ""; // Return empty string instead of 0
     }
+
+    string train_number;
+    cout << "Enter train number: ";
+    cin >> train_number;
+
+    bool found = false;
+    string line;
+    string train_details;
+
+    while (getline(train_out, line)) {
+        if (line == "Train number: " + train_number) {
+            found = true;
+            cout << "\n" << line << endl; // Display the train number
+            while (getline(train_out, line)) {
+                if (line == "___________________________") {
+                    break; // Stop when the delimiter is found
+                }
+                cout << line << endl; // Display the train details
+                train_details += line + "\n"; // Collect train details
+            }
+            break; // Exit the loop after finding the train
+        }
+    }
+
+    train_out.close();
+    
+    if (!found) {
+        cout << "Train not found" << endl;
+        return ""; // Return empty string when not found
+    } else {
+        // Safely return the details
+        if (train_details.length() > 14) {
+            return train_number + train_details.substr(14); // Adjusted to avoid out of range
+        } else {
+            return train_number + train_details; // If details are shorter than 14 characters
+        }
+    }
+}
+
 
     // Delete a train
     void delete_train()

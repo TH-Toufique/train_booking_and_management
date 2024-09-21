@@ -84,29 +84,6 @@ class handling_Booking : public train_Management  // Inherit trainManagement fro
             }
             file_in.close();
         }
-        void search_booking()
-        {
-            file_in.open("tickets.txt", ios :: out);
-            string search_booked;
-            string booking_reading;
-            cout << "Enter train inquiry number: ";
-            cin >> search_booked;
-            while (getline(file_in, booking_reading))
-            {
-                if (booking_reading == ("Train inquiry number: " + search_booked))
-                {
-                    while (getline(file_in, booking_reading))
-                    {
-                        cout << booking_reading << endl;
-                        if (booking_reading == "__________________________")
-                        {
-                            break;
-                        }
-                    }
-                }
-            }
-            file_in.close();
-        }
 
     void cancelTicket()
     {

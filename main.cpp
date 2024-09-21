@@ -1,8 +1,10 @@
 #include<iostream>
 #include<cstdlib> // Perform system based processes
 #include "source/headers.h"
-#include "administrator.h"
+#include "source/administrator.h"
 #include "source/handlingBooking.h"
+#include "source/ticketGenerator.h"
+#include <string>
 
 using namespace std;
 void banner()
@@ -29,6 +31,7 @@ void adminMenu()
         cout << "4. Update for Train" << endl;
         cout << "5. Delete Train" << endl;
         cout << "0. Logout" << endl;
+        cout << "Enter your choice: ";
 }
 
 void userMenu()
@@ -43,6 +46,7 @@ void userMenu()
     cout << "5. Change password" << endl;
     cout << "6. Cancel train" << endl;
     cout << "0. Logout" << endl;
+    cout << "Enter your choice: ";
 }
 
 void loginPage()
@@ -106,13 +110,13 @@ int main()
     }
     
     char selection;
-    train_Management train_manage;
-    handling_Booking handle_booking;
+    // train_Management train_manage;
+    // handling_Booking handle_booking;
 
     // Admin section
     if (flag == "admin")
     {
-        train_Management tm;
+        //train_Management tm;
 
         retry_3:
         banner();
@@ -125,7 +129,7 @@ int main()
             case 1:
             {
             retry_4:
-                tm.add_train();
+                train_manage.add_train();
                 cout << "Do you want to add more train? (y/n): ";
                 cin >> selection;
                 if (selection == 'y' || selection == 'Y' ) // Alternatively cctype header can be used
@@ -140,21 +144,21 @@ int main()
             }
             case 2:
             {
-                tm.view_trains();
+                train_manage.view_trains();
                 system("pause");
                 goto retry_3;
                 break;
             }
             case 3:
             {
-                tm.search_train();
+                train_manage.search_train();
                 system("pause");
-                goto retry_3;
+                //goto retry_3;
                 break;
             }
             case 4:
             {
-                handle_booking.view_bookings();
+               handle_booking. view_bookings();
                 system("pause");
                 goto retry_3;
                 break;
@@ -162,7 +166,7 @@ int main()
             case 5:
             {
                 retry_5:
-                tm.delete_train();
+                train_manage.delete_train();
                 cout << "Do you want to delete more?(y/n)";
                 char option;
                 if (option == 'y'  | option == 'Y')
@@ -251,7 +255,7 @@ int main()
                     break;
                 
                 case 4:
-                    handle_booking.search_booking();
+                    searchBooking();
                     system("pause");
                     goto retry_6;
                     break;
