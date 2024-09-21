@@ -69,3 +69,14 @@ void login_page_2() {
     cout << "Select an option: ";
 }
 
+void passwordMenu(){
+    #ifdef _WIN32
+    system("cls"); // Clear powershell or windows terminal
+    #else
+    system("clear"); // For clearing the terminal
+    #endif
+    cout << "***********************************************************" << endl;
+    cout << "*                     Change Password                     *" << endl;
+    cout << "***********************************************************" << endl;
+    cout << "Enter your old password: ";
+}
